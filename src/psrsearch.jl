@@ -4,7 +4,7 @@ module psrsearch
 using Distributions
 
 """
-z_n_binned(profile, n) --> zsq
+`z_n_binned(profile, n) --> zsq`
 
 ``Z^2_n`` statistic for pulse profiles from binned events
 
@@ -65,7 +65,7 @@ function z_n_binned(profile::Array{T,1}, n::Integer)::T where {T<:AbstractFloat}
 end
 
 """
-z_n(phases, n) --> zsq
+`z_n(phases, n) --> zsq`
 
 ``Z^2_n`` statistics, à la Buccheri+83, A&A, 128, 245, eq. 2.
 
@@ -118,7 +118,7 @@ function z_n(phases::Array{T,1}, n::Integer)::T where {T<:AbstractFloat}
 end
 
 """
-z_n_search(times, n, fmin, fmax [,oversample]) --> freqs, zsq_stat
+`z_n_search(times, n, fmin, fmax [,oversample]) --> freqs, zsq_stat`
 
 Calculate the ``Z^2_n`` statistics at trial frequencies in photon data.
 
