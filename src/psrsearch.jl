@@ -4,21 +4,24 @@ module psrsearch
 using Distributions
 
 """
+z_n_binned(profile, n) --> zsq
+
 ``Z^2_n`` statistic for pulse profiles from binned events
 
 See Bachetti+2021, arXiv:2012.11397
 
 Parameters
 ----------
-profile : array of floats
+`profile` : array of floats
     The folded pulse profile (containing the number of
     photons falling in each pulse bin)
-n : int
+
+`n` : int
     Number of harmonics, including the fundamental
 
 Returns
 -------
-z2_n : float
+`zsq` : float
     The value of the statistic
 
 # Examples
@@ -62,19 +65,22 @@ function z_n_binned(profile::Array{T,1}, n::Integer)::T where {T<:AbstractFloat}
 end
 
 """
+z_n(phases, n) --> zsq
+
 ``Z^2_n`` statistics, à la Buccheri+83, A&A, 128, 245, eq. 2.
 
 Parameters
 ----------
-phase : array of floats
+`phase` : array of floats
     The phases of the events
-n : int, default 2
+
+`n` : int, default 2
     Number of harmonics, including the fundamental
 
 Returns
 -------
-z2_n : float
-    The Z^2_n statistic
+`zsq` : float
+    The ``Z^2_n`` statistic
 
 # Examples
 ```jldoctest
@@ -112,29 +118,35 @@ function z_n(phases::Array{T,1}, n::Integer)::T where {T<:AbstractFloat}
 end
 
 """
-Calculate the Z^2_n statistics at trial frequencies in photon data.
+z_n_search(times, n, fmin, fmax [,oversample]) --> freqs, zsq_stat
+
+Calculate the ``Z^2_n`` statistics at trial frequencies in photon data.
 
 Parameters
 ----------
-times : array-like
+`times` : array-like
     the event arrival times
-n : int
+
+`n` : int
     the number of harmonics in ``Z^2_n``
 
 Other Parameters
 ----------------
-fmin : float
+`fmin` : float
     minimum pulse frequency to search
-fmax : float
+
+`fmax` : float
     maximum pulse frequency to search
-oversample : float
+
+`oversample` : float
     Oversampling factor with respect to the usual 1/T/n rule
 
 Returns
 -------
-fgrid : array-like
+`fgrid` : array-like
     frequency grid of the epoch folding periodogram
-stats : array-like
+
+`zsq_stat` : array-like
     the Z^2_n statistics corresponding to each frequency bin.
 """
 function z_n_search(
