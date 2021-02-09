@@ -1,6 +1,9 @@
 using psrsearch
 using Test
 using Distributions
+using Documenter
+
+doctest(psrsearch)
 
 @testset "psrsearch.jl" begin
     @testset "Basic" begin
