@@ -10,6 +10,8 @@ using Distributions
     end
 
     @testset "Binned" begin
+        flatarr = zeros(10)
+        @test z_n_binned(flatarr, 2) == 0
         flatarr = ones(10)
         @test z_n_binned(flatarr, 2) < 1e-10
         arr = zeros(10)
