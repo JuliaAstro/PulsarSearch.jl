@@ -33,6 +33,9 @@ end
 
 function z_n(phases::Array{T,1}, n::Integer)::T where {T<:AbstractFloat}
     N = length(phases)
+    if N < 2
+        return 0
+    end
     z = 0
     twopiphase = 2 * pi * phases
     for k in range(1, stop = n)

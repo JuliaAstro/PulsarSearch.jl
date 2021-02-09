@@ -4,6 +4,8 @@ using Distributions
 
 @testset "psrsearch.jl" begin
     @testset "Basic" begin
+        flatarr = Array([0.5])
+        @test z_n(flatarr, 2) == 0
         flatarr = Array(range(1, stop = 10) / 10)
         @test z_n(flatarr, 2) < 1e-10
         @test z_n(ones(10), 2) == 40
