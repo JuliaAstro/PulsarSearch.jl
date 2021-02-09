@@ -4,7 +4,7 @@ module psrsearch
 using Distributions
 
 
-function z_n_binned(profile::Array{Float64,1}, n)::Float64
+function z_n_binned(profile::Array{T,1}, n::Integer)::T where {T<:AbstractFloat}
     total = sum(profile)
     N = length(profile)
     phase = Array(range(0, stop = N - 1) / N) * 2 * pi
@@ -31,7 +31,7 @@ function z_n_binned(profile::Array{Float64,1}, n)::Float64
 end
 
 
-function z_n(phases::Array{Float64,1}, n::Int64)::Float64
+function z_n(phases::Array{T,1}, n::Integer)::T where {T<:AbstractFloat}
     N = length(phases)
     z = 0
     twopiphase = 2 * pi * phases
@@ -53,12 +53,12 @@ end
 
 
 function z_n_search(
-    times::Array{Float64,1},
-    n::Int64,
-    fmin::Float64,
-    fmax::Float64;
-    oversample::Float64 = 2,
-)
+    times::Array{T,1},
+    n::Integer,
+    fmin::Number,
+    fmax::Number;
+    oversample::Number = 2,
+) where {T <: AbstractFloat}
     t0 = first(times)
     t1 = last(times)
     df = 1 / (t1 - t0) / oversample
