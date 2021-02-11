@@ -1,7 +1,7 @@
 __precompile__()
 
 module psrsearch
-using Distributions
+include("stats.jl")
 
 """
 `z_n_binned(profile, n) --> zsq`

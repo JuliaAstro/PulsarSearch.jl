@@ -34,5 +34,25 @@ doctest(psrsearch)
         maxind = argmax(stats)
         @test abs(freqs[maxind] - f) < 1e-3
     end
+end
 
+@testset "Stat" begin
+    @testset "single_from_multi $ntrial" for ntrial in [1, 10, 100, 1000, 10000, 100000]
+        epsilon_1 = 0.00000001
+        epsilon_n = p_multitrial_from_single_trial(epsilon_1, ntrial)
+        epsilon_1_corr = p_single_trial_from_p_multitrial(epsilon_n, ntrial)
+
+        @test isapprox(epsilon_1_corr, epsilon_1; rtol=1e-2)
+    end
+    @testset "Zn Det Lev" begin
+        @test isapprox(z2_n_detection_level(2), 13.276704135987625)
+        epsilon_corr = p_single_trial_from_p_multitrial(0.01, 2)
+        @test isapprox(z2_n_detection_level(4, 0.01, ntrial=2),
+                        z2_n_detection_level(4, epsilon_corr))
+
+    end
+    @testset "Zn Det Lev ntrial $ntrial" for ntrial in [1, 10, 100, 1000, 100000]
+        detlev = z2_n_detection_level(2, 0.1, ntrial=ntrial)
+        @test isapprox(z2_n_probability(detlev, 2, ntrial=ntrial), 0.1)
+    end
 end
