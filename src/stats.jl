@@ -81,6 +81,23 @@ its asymptotic limit as z->infty.  This is from Abramowitz
 and Stegun eqn 6.5.32.
 
 Translated from Scott Ransom's PRESTO
+
+
+
+# Examples
+
+```jldoctest
+julia> using psrsearch
+
+julia> pvalues = Array([0.15865525393145707, 0.0013498980316301035]);
+
+julia> sigmas = Array([1, 3]);
+
+julia> all(isapprox(equivalent_gaussian_Nsigma.(pvalues), sigmas; atol=0.1))
+true
+
+```
+
 """
 function log_asymptotic_incomplete_gamma(a, z)
     x = 1.0
@@ -113,27 +130,37 @@ function log_asymptotic_gamma(z)
     one_degree = 2.7777777777777777777778e-3  # 1 / 360
     one_over_1680 = 5.9523809523809529e-4
     one_over_1260 = 7.9365079365079365079365e-4
-    x = (z - 0.5) * np.log(z) - z + half_log_twopi
+    x = (z - 0.5) * log(z) - z + half_log_twopi
     y = 1.0 / (z * z)
-    x += (((-one_over_1680 * y + one_over_1260)* y - one_degree) * y + one_twelfth) / z
+    x +=
+        (
+            ((-one_over_1680 * y + one_over_1260) * y - one_degree) * y +
+            one_twelfth
+        ) / z
     return x
 end
 
 """Log survival function of the chi-squared distribution.
 
-Examples
-
 # Examples
-```jldoctest
-julia> using psrsearch
-julia> chi2 = 31
-julia> # Test that approximate function works as expected. chi2 / dof > 15,
-julia> # but small and safe number in order to compare to scipy.stats
-julia> isapprox(chi2_logp(chi2, 2), logccdf(chi2, 2), atol=0.1)
-True
-julia> chi2 = Array([5, 32])
-julia> isapprox.(chi2_logp.(chi2, 2), logccdf.(chi2, 2), atol=0.1)
-True
+
+```jldoctest chi2_logp
+julia> using psrsearch;
+
+julia> using Distributions;
+
+julia> chi2 = 31;
+
+julia> d = Chisq(2);
+
+julia> isapprox(chi2_logp(chi2, 2), logccdf(d, chi2), atol=0.1)
+true
+
+julia> chi2 = Array([5, 32]);
+
+julia> all(isapprox.(chi2_logp.(chi2, 2), logccdf.(d, chi2), atol=0.1))
+true
+```
 """
 function chi2_logp(chi2, dof)
 
@@ -142,7 +169,7 @@ function chi2_logp(chi2, dof)
     # approximation and the scipy version is tiny, but above which the scipy
     # version starts failing.
     if (chi2 / dof > 15.0) || ((dof > 150) && (chi2 / dof > 6.0))
-        return log_asymptotic_incomplete_gamma(0.5 * dof, 0.5 * chi2) - \
+        return log_asymptotic_incomplete_gamma(0.5 * dof, 0.5 * chi2) -
                log_asymptotic_gamma(0.5 * dof)
     end
     d = Chisq(dof)
@@ -295,8 +322,7 @@ p1 : float
     each single trial.
 """
 function p_single_trial_from_p_multitrial(pn, n)
-    logp = logp_single_trial_from_logp_multitrial(
-        log(pn), n)
+    logp = logp_single_trial_from_logp_multitrial(log(pn), n)
 
     return exp(logp)
 end
@@ -324,7 +350,7 @@ Returns
 p : float
     The probability that the ``Z^2_n`` value has been produced by noise
 """
-function z2_n_probability(z2, n; ntrial=1, n_summed_spectra=1)
+function z2_n_probability(z2, n; ntrial = 1, n_summed_spectra = 1)
     d = Chisq(2 * n * n_summed_spectra)
     epsilon_1 = ccdf(d, z2 * n_summed_spectra)
     epsilon = p_multitrial_from_single_trial(epsilon_1, ntrial)
@@ -354,11 +380,10 @@ Returns
 p : float
     The probability that the ``Z^2_n`` value has been produced by noise
 """
-function z2_n_logprobability(z2, n; ntrial=1, n_summed_spectra=1)
+function z2_n_logprobability(z2, n; ntrial = 1, n_summed_spectra = 1)
 
-    epsilon_1 = chi2_logp(z2 * n_summed_spectra,
-                          2 * n * n_summed_spectra)
-    epsilon = _logp_multitrial_from_single_logp(epsilon_1, ntrial)
+    epsilon_1 = chi2_logp(z2 * n_summed_spectra, 2 * n * n_summed_spectra)
+    epsilon = logp_multitrial_from_single_logp(epsilon_1, ntrial)
     return epsilon
 end
 
@@ -388,7 +413,12 @@ detlev : float
     The epoch folding statistics corresponding to a probability
     epsilon * 100 % that the signal has been produced by noise
 """
-function z2_n_detection_level(n=2, epsilon=0.01; ntrial=1, n_summed_spectra=1)
+function z2_n_detection_level(
+    n = 2,
+    epsilon = 0.01;
+    ntrial = 1,
+    n_summed_spectra = 1,
+)
     epsilon = p_single_trial_from_p_multitrial(epsilon, ntrial)
     d = Chisq(2 * n_summed_spectra * n)
     retlev = cquantile(d, epsilon) / (n_summed_spectra)
