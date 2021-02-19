@@ -4,11 +4,11 @@ using Documenter
 makedocs(;
     modules=[psrsearch],
     authors="Matteo Bachetti <matteo@matteobachetti.it> and contributors",
-    repo="https://github.com/matteobachetti/psrsearch.jl/blob/{commit}{path}#L{line}",
+    repo="https://github.com/JuliaAstro/psrsearch.jl/blob/{commit}{path}#L{line}",
     sitename="psrsearch.jl",
     format=Documenter.HTML(;
         prettyurls=get(ENV, "CI", "false") == "true",
-        canonical="https://matteobachetti.github.io/psrsearch.jl",
+        canonical="https://juliaastro.github.io/psrsearch.jl",
         assets=String[],
     ),
     pages=[
@@ -17,6 +17,6 @@ makedocs(;
 )
 
 deploydocs(;
-    repo="github.com/matteobachetti/psrsearch.jl",
+    repo="github.com/JuliaAstro/psrsearch.jl",
     devbranch = "main"
 )
