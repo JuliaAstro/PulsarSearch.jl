@@ -1,5 +1,3 @@
-__precompile__()
-
 module psrsearch
 include("stats.jl")
 
@@ -38,26 +36,25 @@ julia> z_n_binned([10., 0., 0., 0., 0.], 2)
 40.0
 ```
 """
-function z_n_binned(profile::Array{T,1}, n::Integer)::T where {T<:AbstractFloat}
+function z_n_binned(profile::AbstractVector{T}, n::Integer)::T where {T<:AbstractFloat}
     total = sum(profile)
     N = length(profile)
-    phase = Array(range(0, stop = N - 1) / N) * 2 * pi
+    phase = range(0, stop = N - 1) / N * 2 * pi
 
-    if total == 0
-        return 0
+    if iszero(total)
+        return zero(T)
     end
 
-    z = 0
+    z = zero(T)
     for k in range(1, stop = n)
-        s = 0
-        for i in range(1, stop = N)
-            s += profile[i] * sin(k * phase[i])
+        s = zero(T)
+        c = zero(T)
+        for i in eachindex(profile)
+            sk, ck = sincos(k * phase[i])
+            s += profile[i] * sk
+            c += profile[i] * ck
         end
         s = s^2
-        c = 0
-        for i in range(1, stop = N)
-            c += profile[i] * cos(k * phase[i])
-        end
         c = c^2
         z += c + s
     end
@@ -94,23 +91,22 @@ julia> z_n(Array([0.5]), 2)
 0.0
 ```
 """
-function z_n(phases::Array{T,1}, n::Integer)::T where {T<:AbstractFloat}
+function z_n(phases::AbstractVector{T}, n::Integer)::T where {T<:AbstractFloat}
     N = length(phases)
     if N < 2
-        return 0
+        return zero(T)
     end
-    z = 0
+    z = zero(T)
     twopiphase = 2 * pi * phases
     for k in range(1, stop = n)
-        s = 0
+        s = zero(T)
+        c = zero(T)
         for ph in twopiphase
-            s += sin(k * ph)
+            sk, ck = sincos(k * ph)
+            s += sk
+            c += ck
         end
         s = s^2
-        c = 0
-        for ph in twopiphase
-            c += cos(k * ph)
-        end
         c = c^2
         z += c + s
     end
@@ -150,7 +146,7 @@ Returns
     the Z^2_n statistics corresponding to each frequency bin.
 """
 function z_n_search(
-    times::Array{T,1},
+    times::AbstractVector{T},
     n::Integer,
     fmin::Number,
     fmax::Number;
@@ -159,12 +155,12 @@ function z_n_search(
     t0 = first(times)
     t1 = last(times)
     df = 1 / (t1 - t0) / oversample
-    freqs = [fmin:df:fmax;]
+    freqs = fmin:df:fmax
     N = length(freqs)
-    stats = zeros(N)
-    for i in range(1, stop = N)
+    stats = Vector{T}(undef, N)
+    for i in eachindex(freqs)
         phases = times * freqs[i]
-        phases -= floor.(phases)
+        phases .-= floor.(phases)
         stats[i] = z_n(phases, n)
     end
     return freqs, stats
