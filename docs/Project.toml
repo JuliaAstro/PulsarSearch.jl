@@ -1,3 +1,5 @@
 [deps]
 Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
-psrsearch = "b7fe27a0-ab0c-4e8e-b203-2a459fc90788"
+
+[compat]
+Documenter = "~0.26"
