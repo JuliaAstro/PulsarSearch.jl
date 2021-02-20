@@ -32,8 +32,14 @@ doctest(psrsearch)
         f = 1.123
         times = sort((phases + pulse_no) / f)
         freqs, stats = z_n_search(times, 2, 1.0, 1.5, oversample = 4.0)
+        freqs_bin, stats_bin = z_n_search_hist(times, 2, 1.0, 1.5, oversample = 4.0, nbin=256)
         maxind = argmax(stats)
         @test abs(freqs[maxind] - f) < 1e-3
+        maxind = argmax(stats_bin)
+        @test abs(freqs_bin[maxind] - f) < 1e-3
+        @test all(isapprox.(stats, stats_bin, rtol = 0.1))
+        @test all(isapprox.(freqs, freqs_bin, rtol = 0.1))
+
     end
 end
 

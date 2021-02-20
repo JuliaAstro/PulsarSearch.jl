@@ -1,4 +1,5 @@
 module psrsearch
+using StatsBase
 include("stats.jl")
 
 """
@@ -36,19 +37,19 @@ julia> z_n_binned([10., 0., 0., 0., 0.], 2)
 40.0
 ```
 """
-function z_n_binned(profile::AbstractVector{T}, n::Integer)::T where {T<:AbstractFloat}
+function z_n_binned(profile::AbstractVector{}, n::Integer)::Float64
     total = sum(profile)
     N = length(profile)
-    phase = range(0, stop = N - 1) / N * 2 * pi
+    phase = range(0, stop = N - 1)  * (2pi/ N)
 
     if iszero(total)
-        return zero(T)
+        return 0.0
     end
 
-    z = zero(T)
+    z = zero(Float64)
     for k in range(1, stop = n)
-        s = zero(T)
-        c = zero(T)
+        s = 0.0
+        c = 0.0
         for i in eachindex(profile)
             sk, ck = sincos(k * phase[i])
             s += profile[i] * sk
@@ -166,9 +167,70 @@ function z_n_search(
     return freqs, stats
 end
 
+"""
+`z_n_search_hist(times, n, fmin, fmax [,oversample]) --> freqs, zsq_stat`
+
+Calculate the ``Z^2_n`` statistics at trial frequencies in photon data.
+Pre-bins the data using a histogram.
+At the moment, it is _not_ faster. It will be after I add the 2-d hist
++ shift-and-add. But it allowed to test that `z_n_binned works` with
+binned data.
+
+Parameters
+----------
+`times` : array-like
+    the event arrival times
+
+`n` : int
+    the number of harmonics in ``Z^2_n``
+
+Other Parameters
+----------------
+`fmin` : float
+    minimum pulse frequency to search
+
+`fmax` : float
+    maximum pulse frequency to search
+
+`oversample` : float
+    Oversampling factor with respect to the usual 1/T/n rule
+
+Returns
+-------
+`fgrid` : array-like
+    frequency grid of the epoch folding periodogram
+
+`zsq_stat` : array-like
+    the Z^2_n statistics corresponding to each frequency bin.
+"""
+function z_n_search_hist(
+    times::AbstractVector{T},
+    n::Integer,
+    fmin::Number,
+    fmax::Number;
+    oversample::Number = 2,
+    nbin::Integer = 16
+) where {T <: AbstractFloat}
+    t0 = first(times)
+    t1 = last(times)
+    df = 1 / (t1 - t0) / oversample
+    freqs = fmin:df:fmax
+    N = length(freqs)
+    stats = Vector{T}(undef, N)
+    for i in eachindex(freqs)
+        phases = times * freqs[i]
+        phases .-= floor.(phases)
+        hist = fit(Histogram, phases, 0.0:(1/nbin):1.0)
+        stats[i] = z_n_binned(hist.weights, n)
+    end
+    return freqs, stats
+end
+
+
 export z_n
 export z_n_binned
 export z_n_search
+export z_n_search_hist
 # Write your package code here.
 
 end
