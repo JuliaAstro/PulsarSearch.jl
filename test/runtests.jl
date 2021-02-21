@@ -1,12 +1,12 @@
-using psrsearch
+using PulsarSearch
 using Test
 using Distributions
 using Documenter
 
-doctest(psrsearch)
+doctest(PulsarSearch)
 
 
-@testset "psrsearch.jl" begin
+@testset "PulsarSearch.jl" begin
     @testset "Basic" begin
         flatarr = Array([0.5])
         @test z_n(flatarr, 2) == 0
