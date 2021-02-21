@@ -1,4 +1,4 @@
-name = "psrsearch"
+name = "PulsarSearch"
 uuid = "b7fe27a0-ab0c-4e8e-b203-2a459fc90788"
 authors = ["Matteo Bachetti <matteo@matteobachetti.it> and contributors"]
 version = "0.1.0"
@@ -11,6 +11,9 @@ TOML = "fa267f1f-6049-4f14-aa54-33bafae1ed76"
 
 [compat]
 StatsBase = "0.33"
+Plots = "1.10"
+Distributions = "0.24"
+TOML = "1.0"
 julia = "1"
 
 [extras]

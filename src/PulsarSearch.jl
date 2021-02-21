@@ -1,4 +1,4 @@
-module psrsearch
+module PulsarSearch
 using StatsBase
 include("stats.jl")
 
@@ -25,7 +25,7 @@ Returns
 
 # Examples
 ```jldoctest
-julia> using psrsearch
+julia> using PulsarSearch
 
 julia> z_n_binned(zeros(10), 2)
 0.0
@@ -82,7 +82,7 @@ Returns
 
 # Examples
 ```jldoctest
-julia> using psrsearch
+julia> using PulsarSearch
 
 julia> z_n([10., 0., 0., 0., 0.], 2)
 20.0
