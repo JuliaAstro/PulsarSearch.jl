@@ -11,6 +11,10 @@ TOML = "fa267f1f-6049-4f14-aa54-33bafae1ed76"
 
 [compat]
 julia = "1.0"
+Plots = "1.10"
+Distributions = "0.24"
+TOML = "1.0"
+StatsBase = "0.33"
 
 [extras]
 Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
