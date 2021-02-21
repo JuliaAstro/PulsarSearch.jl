@@ -1,4 +1,4 @@
-name = "psrsearch"
+name = "PulsarSearch"
 uuid = "b7fe27a0-ab0c-4e8e-b203-2a459fc90788"
 authors = ["Matteo Bachetti <matteo@matteobachetti.it> and contributors"]
 version = "0.1.0"
