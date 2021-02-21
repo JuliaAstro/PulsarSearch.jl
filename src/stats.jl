@@ -36,7 +36,7 @@ between Nsigma and +inf.
 
 # Examples
 ```jldoctest
-julia> using psrsearch
+julia> using PulsarSearch
 
 julia> pvalues = Array([0.15865525393145707, 0.0013498980316301035, 9.865877e-10, 6.22096e-16, 3.0567e-138]);
 
@@ -87,7 +87,7 @@ Translated from Scott Ransom's PRESTO
 # Examples
 
 ```jldoctest
-julia> using psrsearch
+julia> using PulsarSearch
 
 julia> pvalues = Array([0.15865525393145707, 0.0013498980316301035]);
 
@@ -145,7 +145,7 @@ end
 # Examples
 
 ```jldoctest chi2_logp
-julia> using psrsearch;
+julia> using PulsarSearch;
 
 julia> using Distributions;
 

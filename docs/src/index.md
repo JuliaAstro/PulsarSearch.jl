@@ -1,10 +1,10 @@
 ```@meta
-CurrentModule = psrsearch
+CurrentModule = PulsarSearch
 ```
 
-# psrsearch
+# PulsarSearch
 
-`psrsearch` is a set of tools for (X-ray) pulsar searches.
+`PulsarSearch` is a set of tools for (X-ray) pulsar searches.
 
 VERY EARLY DRAFT. Mostly for educational purposes
 
@@ -13,5 +13,5 @@ VERY EARLY DRAFT. Mostly for educational purposes
 ```
 
 ```@autodocs
-Modules = [psrsearch]
+Modules = [PulsarSearch]
 ```

@@ -1,14 +1,14 @@
-using psrsearch
+using PulsarSearch
 using Documenter
 
 makedocs(;
-    modules=[psrsearch],
+    modules=[PulsarSearch],
     authors="Matteo Bachetti <matteo@matteobachetti.it> and contributors",
-    repo="https://github.com/JuliaAstro/psrsearch.jl/blob/{commit}{path}#L{line}",
-    sitename="psrsearch.jl",
+    repo="https://github.com/JuliaAstro/PulsarSearch.jl/blob/{commit}{path}#L{line}",
+    sitename="PulsarSearch.jl",
     format=Documenter.HTML(;
         prettyurls=get(ENV, "CI", "false") == "true",
-        canonical="https://juliaastro.github.io/psrsearch.jl",
+        canonical="https://juliaastro.github.io/PulsarSearch.jl",
         assets=String[],
     ),
     pages=[
@@ -17,6 +17,6 @@ makedocs(;
 )
 
 deploydocs(;
-    repo="github.com/JuliaAstro/psrsearch.jl",
+    repo="github.com/JuliaAstro/PulsarSearch.jl",
     devbranch = "main"
 )
