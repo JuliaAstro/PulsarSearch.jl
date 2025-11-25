@@ -1,16 +1,16 @@
 name = "PulsarSearch"
 uuid = "b7fe27a0-ab0c-4e8e-b203-2a459fc90788"
-authors = ["Matteo Bachetti <matteo@matteobachetti.it> and contributors"]
 version = "0.1.0"
+authors = ["Matteo Bachetti <matteo@matteobachetti.it> and contributors"]
 
 [deps]
 Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
 StatsBase = "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"
 
 [compat]
-julia = "1.0"
 Distributions = "0.24"
-StatsBase = "0.33"
+StatsBase = "0.33, 0.34"
+julia = "1.0"
 
 [extras]
 Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
